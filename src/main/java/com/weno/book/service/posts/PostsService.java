@@ -2,6 +2,7 @@ package com.weno.book.service.posts;
 
 import com.weno.book.domain.posts.Posts;
 import com.weno.book.domain.posts.PostsRepository;
+import com.weno.book.web.dto.PostsListResponseDto;
 import com.weno.book.web.dto.PostsResponseDto;
 import com.weno.book.web.dto.PostsSaveRequestDto;
 import com.weno.book.web.dto.PostsUpdateRequestDto;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -19,8 +22,6 @@ public class PostsService {
 
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {
-
-        System.out.println("In PostsService : " + postsRepository.save(requestDto.toEntity()).getId());
         return postsRepository.save(requestDto.toEntity()).getId();
     }
 
@@ -40,4 +41,16 @@ public class PostsService {
 
         return new PostsResponseDto(entity);
     }
+
+    @Transactional
+    public List<PostsListResponseDto> findAllDesc() {
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
 }
